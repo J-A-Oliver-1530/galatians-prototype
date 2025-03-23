@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galatians Prototype</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Galatians</h1>
+        <div id="verses"></div>
+    </div>
+    <script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const versesDiv = document.getElementById('verses');
+                for (const [verseId, info] of Object.entries(data)) {
+                    // Add verse text
+                    const verse = document.createElement('p');
+                    verse.innerHTML = `<b>${verseId}:</b> ${info.text}`;
+                    versesDiv.appendChild(verse);
+                    // Add commentary list
+                    const ul = document.createElement('ul');
+                    for (const [author, comment] of Object.entries(info.commentary)) {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<b>${author}:</b> ${comment}`;
+                        ul.appendChild(li);
+                    }
+                    versesDiv.appendChild(ul);
+                }
+            })
+            .catch(error => console.error('Error loading data:', error));
+    </script>
+</body>
+</html>
